@@ -110,7 +110,7 @@
     { my ($package,$ac,$init) = @_
     ; $ac   ||= []
 
-    ; my $caller = $HO::accessor::class || caller
+    ; my $caller = $HO::accessor::class || CORE::caller
 
     ; die "HO::accessor::import already called for class $caller."
         if $classes{$caller}
@@ -205,6 +205,18 @@
 ; sub rw
     { my ($name,$idx,$type) = @_
     ; return $rw_accessor{$type}->($name,$idx)
+    }
+
+##########################
+# Extension helper
+##########################
+; sub caller
+    { my $lvl = 5
+    ; do 
+        { my $pkg = caller($lvl++)
+        ; return $pkg if $pkg ne 'HO::class' || $pkg ne 'HO::accessor'
+        } while($lvl<1000)
+    ; die 'uups'
     }
 
 ; 1

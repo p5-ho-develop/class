@@ -70,7 +70,7 @@
             { shift @args
             # $makeconstr = 0
             }
-          , ' alias' => sub
+          , 'alias' => sub
             { 
             }
           , 'breakalias' => sub
