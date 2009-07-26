@@ -44,7 +44,7 @@
               else
                 { push @r_, $name => sub
                     { my $idx = HO::accessor::_value_of($class,"_$name")
-                    ; return HO::accessor::rw($name,$idx,$type)
+                    ; return HO::accessor::rw($name,$idx,$type,$class)
                     }
                 }
             }
@@ -57,7 +57,7 @@
               else
                 { push @r_, $name => sub
                     { my $idx = HO::accessor::_value_of($class,"_$name")
-                    ; return HO::accessor::ro($name,$idx,$type)
+                    ; return HO::accessor::ro($name,$idx,$type,$class)
                     }
                 }
             }
@@ -89,11 +89,7 @@
           { my ($name,$code) = splice(@methods,0,2)
           ; my $idx = HO::accessor::_value_of($class,"_$name")
           ; my $cdx = HO::accessor::_value_of($class,"__$name")
-          ; *{join('::',$class,$name)} = sub
-              { my $self = shift
-              ; return $self->[$idx] ? $self->[$idx]->($self,@_)
-                                     : $self->[$cdx]->($self,@_)
-              }
+          ; *{join('::',$class,$name)} = HO::accessor::method($idx,$cdx)
           }
 
       ; while(@lvalue)
@@ -124,10 +120,9 @@
 	      }
       }
   # optional shortcut_in
-      
   ; my $code = 'package '.$args{'in'}.'::'.$args{'name'}.';'
              . 'our @ISA = qw/'.join(' ',@{$args{'of'}}).'/;' . $args{'code'}
-      
+
   ; if($args{'shortcut_in'})
       { my $sc = $args{'shortcut'} || $args{'name'}
       ; $code .= 'package '.$args{'shortcut_in'}.';'

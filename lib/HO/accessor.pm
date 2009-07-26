@@ -18,7 +18,7 @@
         { my ($self,%args) = @_
         ; while(my ($method,$value)=each(%args))
             { my $access = "_$method" 
-            ; $self->[$self->$access] = $value            	
+            ; $self->[$self->$access] = $value	
             }
         ; return $self
         }
@@ -148,12 +148,15 @@
           ($init || $caller->can('init')) ?
             sub
               { my ($self,@args)=@_
-              ; bless([map {ref() ? $_->() : $_} @constructor], ref $self || $self)
-                  ->init(@args)
+              ; my $obj = bless [], ref $self || $self
+              ; @$obj = map {ref() ? $_->($obj,\@args) : $_} @constructor 
+              ; return $obj->init(@args)
               }
           : sub
               { my ($self,@args)=@_
-              ; bless([map {ref() ? $_->() : $_} @constructor], ref $self || $self)
+              ; my $obj = bless [], ref $self || $self
+              ; @$obj = map {ref() ? $_->($obj,\@args) : $_} @constructor 
+              ; return $obj
               }
       ; my %acc=@{$classes{$caller}}
       ; foreach my $acc (keys %acc)
@@ -198,25 +201,22 @@
 # accessors
 #########################
 ; sub ro
-    { my ($name,$idx,$type) = @_
-    ; return $ro_accessor{$type}->($name,$idx)
-    }
-    
-; sub rw
-    { my ($name,$idx,$type) = @_
-    ; return $rw_accessor{$type}->($name,$idx)
+    { my ($name,$idx,$type,$class) = @_
+    ; return $ro_accessor{$type}->($name,$idx,$class)
     }
 
-##########################
-# Extension helper
-##########################
-; sub caller
-    { my $lvl = 5
-    ; do 
-        { my $pkg = caller($lvl++)
-        ; return $pkg if $pkg ne 'HO::class' || $pkg ne 'HO::accessor'
-        } while($lvl<1000)
-    ; die 'uups'
+; sub rw
+    { my ($name,$idx,$type,$class) = @_
+    ; return $rw_accessor{$type}->($name,$idx,$class)
+    }
+
+; sub method
+    { my ($idx,$cdx) = @_
+    ; return sub
+        { my $self = shift
+        ; return $self->[$idx] ? $self->[$idx]->($self,@_)
+                               : $self->[$cdx]->($self,@_)
+        }
     }
 
 ; 1
