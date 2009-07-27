@@ -106,6 +106,14 @@
 
 ; our $class
 
+; my $object_builder = sub
+    { my ($obj,$constructor,$args) = @_
+    ; foreach my $typedefault (@$constructor)
+        { push @{$obj}, ref($typedefault) ? $typedefault->($obj,$args) 
+                                          : $typedefault
+        }
+    }
+
 ; sub import
     { my ($package,$ac,$init) = @_
     ; $ac   ||= []
@@ -149,13 +157,13 @@
             sub
               { my ($self,@args)=@_
               ; my $obj = bless [], ref $self || $self
-              ; @$obj = map {ref() ? $_->($obj,\@args) : $_} @constructor 
+              ; $object_builder->($obj,\@constructor,\@args)
               ; return $obj->init(@args)
               }
           : sub
               { my ($self,@args)=@_
               ; my $obj = bless [], ref $self || $self
-              ; @$obj = map {ref() ? $_->($obj,\@args) : $_} @constructor 
+              ; $object_builder->($obj,\@constructor,\@args)
               ; return $obj
               }
       ; my %acc=@{$classes{$caller}}
