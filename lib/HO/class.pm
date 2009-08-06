@@ -16,6 +16,7 @@
     ; my @lvalue      # lvalue accessor
     ; my @r_          # common accessors
     ; my $makeinit    # key for init method or subref used as init
+    ; my @alias
 
     ; while(@args)
         { my $action = lc(shift @args)
@@ -65,16 +66,12 @@
               { $makeinit = shift @args
               }
           # no actions => options
-          # all are unsupported until now
+          # all are untested until now
           , 'noconstructor' => sub
-            { shift @args
-            # $makeconstr = 0
+            { $makeconstr = 0
             }
           , 'alias' => sub
-            { 
-            }
-          , 'breakalias' => sub
-            { 
+            { push @alias, splice(@args,0,2)
             }
           }->{$action}||sub { die "Unknown action '$action' for $package."
                             })->()
@@ -99,8 +96,13 @@
 	           { shift()->[$idx]
 	           }
           }
-      ; while(my ($name,$subref)=splice(@r_,0,2))
+      ; while(my ($name,$subref) = splice(@r_,0,2))
           { *{join('::',$class,$name)} = $subref->()
+          }
+      ; while(my ($new,$subname) = splice(@alias,0,2))
+          { my $idx = HO::accessor::_value_of($class,"_$subname")
+          ; *{join('::',$class,$new)} = \&{join('::',$class,$subname)}
+          ; *{join('::',$class,"_$new")} = \&{join('::',$class,"_$subname")}
           }
       }
     }

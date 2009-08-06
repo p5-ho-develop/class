@@ -1,6 +1,6 @@
   package HO::accessor
 # ++++++++++++++++++++
-; our $VERSION='0.01'
+; our $VERSION='0.02'
 # +++++++++++++++++++
 ; use strict; use warnings
 
@@ -17,16 +17,17 @@
     ( 'hash' => sub
         { my ($self,%args) = @_
         ; while(my ($method,$value)=each(%args))
-            { my $access = "_$method" 
-            ; $self->[$self->$access] = $value	
+            { my $access = "_$method"
+            ; $self->[$self->$access] = $value
             }
         ; return $self
         }
     )
 
 ; our %ro_accessor =
-    ( '$' => sub { my ($n,$i) = @_ 
-                 ; return sub (){ Carp::confess unless ref($_[0]); shift()->[$i] } 
+    ( '$' => sub { my ($n,$i) = @_
+                 ; return sub (){ Carp::confess("Not a class method '$n'.")
+                     unless ref($_[0]); shift()->[$i] }
                  }
     , '@' => sub { my ($n,$i) = @_
                  ; return sub { my ($obj,$idx) = @_
@@ -41,7 +42,7 @@
                            : $obj->[$i]->{$key}
                  }}
     )
-    
+
 ; our %rw_accessor =
     ( '$' => sub { my ($n,$i) = @_
                  ; return sub { my ($obj,$val) = @_
@@ -50,7 +51,9 @@
                      ; return $obj
                  }}
     , '@' => sub { my ($n,$i) = @_
-                 ; return sub { my ($obj,$idx,$val) = @_
+                 ; return sub
+                     { my ($obj,$idx,$val) = @_
+                     ; Carp::confess("Not a class method '$n'.") unless ref $obj
                      ; if(@_==1) # get values
                          { # etwas mehr Zugriffsschutz da keine Ref
                            # einfache Anwendung in bool Kontext
@@ -85,12 +88,12 @@
                      }
                    elsif(@_==2)
                      { if(ref($key) eq 'HASH')
-                     	{ $obj->[$i] = $key
-                     	; return $obj
-                     	}
-                       else
-                        { return $obj->[$i]->{$key}
-                        }
+                         { $obj->[$i] = $key
+                         ; return $obj
+                         }
+                        else
+                         { return $obj->[$i]->{$key}
+                         }
                      }
                    else
                      { shift(@_)
@@ -109,7 +112,7 @@
 ; my $object_builder = sub
     { my ($obj,$constructor,$args) = @_
     ; foreach my $typedefault (@$constructor)
-        { push @{$obj}, ref($typedefault) ? $typedefault->($obj,$args) 
+        { push @{$obj}, ref($typedefault) ? $typedefault->($obj,$args)
                                           : $typedefault
         }
     }
@@ -118,7 +121,7 @@
     { my ($package,$ac,$init) = @_
     ; $ac   ||= []
 
-    ; my $caller = $HO::accessor::class || CORE::caller
+    ; my $caller = $HO::accessor::class || caller
 
     ; die "HO::accessor::import already called for class $caller."
         if $classes{$caller}
@@ -175,11 +178,11 @@
     # setup init method
     ; if($init)
         { unless(ref($init) eq 'CODE' )
-        	{ $init = $init{$init}
-        	; unless(defined $init)
-        	    { Carp::croak("There is no init defined for init argument $init.")
-        	    }
-        	}
+            { $init = $init{$init}
+            ; unless(defined $init)
+                { Carp::croak("There is no init defined for init argument $init.")
+                }
+            }
         ; no strict 'refs'
         ; *{"${caller}::init"}= $init
         }
@@ -234,7 +237,7 @@ __END__
 =head1 NAME
 
 HO::accessor
-  
+
 =head1 SYNOPSIS
 
     package HO::World::Consumer;
@@ -251,9 +254,3 @@ deprecated
 L<Class::ArrayObjects> by Robin Berjon (RBERJON)
 
 L<Class::BuildMethods> by Ovid -- add inside out data stores to a class.
-
-
-
-
-
-
