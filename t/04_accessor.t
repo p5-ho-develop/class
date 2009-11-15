@@ -5,9 +5,9 @@ use Test::More tests => 11;
 require_ok('HO::accessor');
 
 package T::one;
-use HO::accessor [__t => '$'];
+use HO::accessor [__t => '$'] , 0, 1; # accessors, make_init, make_constructor
 
-my $t1 = new T::one;
+my $t1 = new T::one::;
 Test::More::isa_ok($t1,'T::one');
 
 Test::More::is(ref $t1->[0], '');
