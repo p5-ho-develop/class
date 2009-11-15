@@ -1,6 +1,6 @@
   package HO::class
 # *****************
-; our $VERSION='0.04'
+; our $VERSION='0.05'
 # *******************
 ; use strict; use warnings
 
@@ -10,7 +10,7 @@
 ; sub import
     { my ($package,@args)=@_
     ; my $makeconstr = 1
-    ; my $class = caller
+    ; my $class = $HO::accessor::class || caller
     ; my @acc         # all internal accessors
     ; my @methods     # method changeable on a per object base
     ; my @lvalue      # lvalue accessor
@@ -23,7 +23,7 @@
         ; my ($name,$type,$code)
         ;({ '_method' => sub
             { ($name,$code) = splice(@args,0,2)
-            ; push @acc, "__$name",sub { $code }
+            ; push @acc, "__$name",sub { $code } if defined $code
             ; push @acc, "_$name",'$'
             ; push @methods, $name, $code
             }
@@ -76,10 +76,9 @@
           }->{$action}||sub { die "Unknown action '$action' for $package."
                             })->()
     }
-    ; if($makeconstr)
-        { local $HO::accessor::class = $class 
-        ; import HO::accessor:: (\@acc,$makeinit) 
-        }
+    ; { local $HO::accessor::class = $class 
+      ; import HO::accessor:: (\@acc,$makeinit,$makeconstr) 
+      }
 
     ; { no strict 'refs'
       ; while(@methods)

@@ -1,6 +1,6 @@
   package HO::accessor
 # ++++++++++++++++++++
-; our $VERSION='0.02'
+; our $VERSION='0.03'
 # +++++++++++++++++++
 ; use strict; use warnings
 
@@ -11,7 +11,7 @@
 ; my %classes
 ; my %accessors
 
-; our %type = ('@'=>sub{[]},'%'=>sub{{}},'$'=>sub{undef})
+; our %type = ('@'=>sub () {[]}, '%'=>sub () {{}}, '$'=>sub () {undef})
 
 ; our %init =
     ( 'hash' => sub
@@ -118,7 +118,7 @@
     }
 
 ; sub import
-    { my ($package,$ac,$init) = @_
+    { my ($package,$ac,$init,$new) = @_
     ; $ac   ||= []
 
     ; my $caller = $HO::accessor::class || caller
@@ -154,21 +154,25 @@
             ; $count++
             }
         }
+    # FIXME: Die init Methode sollte Zugriff auf $self haben können.
     ; { no strict 'refs'
-      ; *{"${caller}::new"}=
-          ($init || $caller->can('init')) ?
-            sub
-              { my ($self,@args)=@_
-              ; my $obj = bless [], ref $self || $self
-              ; $object_builder->($obj,\@constructor,\@args)
-              ; return $obj->init(@args)
-              }
-          : sub
-              { my ($self,@args)=@_
-              ; my $obj = bless [], ref $self || $self
-              ; $object_builder->($obj,\@constructor,\@args)
-              ; return $obj
-              }
+      ; if($new)
+          { *{"${caller}::new"}=
+              ($init || $caller->can('init')) ?
+                sub
+                  { my ($self,@args)=@_
+                  ; my $obj = bless [], ref $self || $self
+                  ; $object_builder->($obj,\@constructor,\@args)
+                  ; return $obj->init(@args)
+                  }
+              : sub
+                  { my ($self,@args)=@_
+                  ; my $obj = bless [], ref $self || $self
+                  ; $object_builder->($obj,\@constructor,\@args)
+                  ; return $obj
+                  }
+          }
+
       ; my %acc=@{$classes{$caller}}
       ; foreach my $acc (keys %acc)
           { *{"${caller}::${acc}"}=$accessors{$caller}{$acc}
@@ -223,10 +227,18 @@
 
 ; sub method
     { my ($idx,$cdx) = @_
-    ; return sub
-        { my $self = shift
-        ; return $self->[$idx] ? $self->[$idx]->($self,@_)
-                               : $self->[$cdx]->($self,@_)
+    ; if(defined $cdx)
+        { return sub
+            { my $self = shift
+            ; return $self->[$idx] ? $self->[$idx]->($self,@_)
+                                   : $self->[$cdx]->($self,@_)
+            }
+        }
+      else
+        { return sub
+             { my $self = shift
+             ; return $self->[$cdx]->($self,@_)
+             }
         }
     }
 

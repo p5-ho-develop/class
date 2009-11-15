@@ -31,44 +31,52 @@
             }  
         }
     }
-	
+
 ; { our $target
 
   ; sub abstract_method
       { my @methods = @_
-	  ; local $target = $target
-	  
+      ; local $target = $target
+
       ; foreach my $method (@methods)
           { install Package::Subroutine 
-		      $target => $method => $METHOD_DIE->($method)
+              $target => $method => $METHOD_DIE->($method)
           }
       }
+
   ; sub abstract_class
-      { my (@classes) = @_
-      ; local $target = $target
+      { my (@classes) = @_ ? @_ : ($target)
       ; foreach my $class (@classes)
           { install Package::Subroutine
-                     $target => 'init' => $CLASS_DIE->($class)
+                     $class => 'init' => $CLASS_DIE->($class)
           } 
       }
-    
+
   ; sub import
       { my ($self,$action,@params) = @_
-	  ; return unless defined $action
-	  ; local $target = caller
-	
-	  ; my $perform = 
+      ; return unless defined $action
+      ; local $target = caller
+
+      ; my $perform = 
               { 'method' => \&abstract_method 
               , 'class' => \&abstract_class
               }->{$action}
-	  ; die "Unknown action '$action' in use of HO::abstract." unless $perform
-	
-	  ; $perform->($target,@params)
-          }
+      ; die "Unknown action '$action' in use of HO::abstract." unless $perform
+
+      ; $perform->($target,@params)
+      }
   }
-    
+
 ; 1
 
 __END__
 
+=head1 NAME
 
+HO::abstract - helper for abstract classes and methods
+
+=head1 SYNOPSIS
+
+   package Class::Is::Abstract;
+
+   use HO::abstract class =>
