@@ -1,4 +1,5 @@
 use strict;
+use warnings;
 
 use Test::More tests => 11;
 
@@ -31,25 +32,25 @@ my $tw2 = $twc->new;
 Test::More::isa_ok($tw2,'T::one_without_constr');
 
 ; package T::entity
-; BEGIN 
+; BEGIN
     { Test::More::use_ok
         ( 'HO::class',
              _ro => name => '$',
              _ro => href => '$'
         )
     }
-    
+
 ; my $e = new T::entity::
 ; $e->[$e->_name] = 'timestamp'
 ; $e->[$e->_href] = 'http://localhost:8091/time/'
 
 ; Test::More::is($e->name,'timestamp')
 ; Test::More::is($e->href,'http://localhost:8091/time/')
-    
-# TODO skip when profiling 
+
+# TODO skip when profiling
 ; package T::plus
 ; use HO::class
     _lvalue => val => '%'
- 
+
 ; Test::More::is_deeply((T::plus->new->val={}),{})
- 
+

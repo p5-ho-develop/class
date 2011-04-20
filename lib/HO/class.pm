@@ -76,8 +76,8 @@
           }->{$action}||sub { die "Unknown action '$action' for $package."
                             })->()
     }
-    ; { local $HO::accessor::class = $class 
-      ; import HO::accessor:: (\@acc,$makeinit,$makeconstr) 
+    ; { local $HO::accessor::class = $class
+      ; import HO::accessor:: (\@acc,$makeinit,$makeconstr)
       }
 
     ; { no strict 'refs'
@@ -92,8 +92,8 @@
           { my $name = shift(@lvalue)
           ; my $idx = HO::accessor::_value_of($class,"_$name")
           ; *{join('::',$class,$name)} = sub : lvalue
-	           { shift()->[$idx]
-	           }
+               { shift()->[$idx]
+               }
           }
       ; while(my ($name,$subref) = splice(@r_,0,2))
           { *{join('::',$class,$name)} = $subref->()
@@ -113,12 +113,12 @@
   ; $args{'in'}   ||= $args{'of'}->[0]
   ; unless($args{'code'})
       { if(ref $args{'codegen'})
-	      { 
-	        $args{'code'} = $args{'codegen'}->(%args) 
-	      }
-	    else
-	      { $args{'code'} = "$args{'codegen'}"
-	      }
+          {
+            $args{'code'} = $args{'codegen'}->(%args)
+          }
+        else
+          { $args{'code'} = "$args{'codegen'}"
+          }
       }
   # optional shortcut_in
   ; my $code = 'package '.$args{'in'}.'::'.$args{'name'}.';'
@@ -127,7 +127,7 @@
   ; if($args{'shortcut_in'})
       { my $sc = $args{'shortcut'} || $args{'name'}
       ; $code .= 'package '.$args{'shortcut_in'}.';'
-	       . 'sub '.$sc.' { new '.$args{'in'}.'::'.$args{'name'}.'::(@_) }'
+           . 'sub '.$sc.' { new '.$args{'in'}.'::'.$args{'name'}.'::(@_) }'
       }
   ; eval $code
   ; Carp::croak($@) if $@
@@ -149,13 +149,20 @@ HO::class - class builder for hierarchical objects
       _method => huh => sub { print 'go' }
       _rw     => spd => '%'
       _ro     => cdu => '$'
-      
+
 =head1 DESCRIPTION
 
-This is a class builder. It does work during compile time. 
+This is a class builder. It does its job during compile time.
 
-Until now there are five different keywords which can be used
-to define different accessors.
+Development started because there is no class builder for array based
+objects with all the features I needed.
+
+Five different keys could be used, to define different
+accessors. The second field is name of the part from class
+which will be created.
+
+
+
 
 =head2 A Simple Slot To Define
 
@@ -174,12 +181,42 @@ base. This is not the default, because the extra space required.
 
    use HO::XML
        _method => namespace:static => sub { undef }
-       
+
 Currently the word behind the colon could be free choosen. Only the
 existence of a colon in the name is checked.
 
+=head1 Class Function
+
+=over 4
+
+=item make_subclass
+
+=back
+
+=head1 ACKNOWLEDGEMENT
+
+=over 4
+
+=item my employer in Leipzig
+
+=item translate.google.com
+
+=back
+
+=head1 AUTHOR
+
+Sebastian Knapp, E<lt>rock@ccls-online.deE<gt>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2007-2011 by Sebastian Knapp
+
+You may distribute this code under the same terms as Perl itself.
 
 =head1 CHANGELOG
 
    - 0.4 2009-07-22
       * always store the base method in the object
+
+=cut
+

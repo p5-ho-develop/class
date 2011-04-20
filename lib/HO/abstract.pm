@@ -28,7 +28,7 @@
             }
           else
             { Carp::croak("Class '$instanceof' should overwrite method init from abstract class '$class'.")
-            }  
+            }
         }
     }
 
@@ -39,7 +39,7 @@
       ; local $target = $target
 
       ; foreach my $method (@methods)
-          { install Package::Subroutine 
+          { install Package::Subroutine
               $target => $method => $METHOD_DIE->($method)
           }
       }
@@ -49,7 +49,7 @@
       ; foreach my $class (@classes)
           { install Package::Subroutine
                      $class => 'init' => $CLASS_DIE->($class)
-          } 
+          }
       }
 
   ; sub import
@@ -57,8 +57,8 @@
       ; return unless defined $action
       ; local $target = caller
 
-      ; my $perform = 
-              { 'method' => \&abstract_method 
+      ; my $perform =
+              { 'method' => \&abstract_method
               , 'class' => \&abstract_class
               }->{$action}
       ; die "Unknown action '$action' in use of HO::abstract." unless $perform
@@ -80,3 +80,26 @@ HO::abstract - helper for abstract classes and methods
    package Class::Is::Abstract;
 
    use HO::abstract class =>
+
+=head1 DESCRIPTION
+
+=over 4
+
+=item abstract_class
+
+=item abstract_method
+
+=back
+
+=head1 AUTHOR
+
+Sebastian Knapp, E<lt>rock@ccls-online.deE<gt>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2007-2011 by Sebastian Knapp
+
+You may distribute this code under the same terms as Perl itself.
+
+=cut
+

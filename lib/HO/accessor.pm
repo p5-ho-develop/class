@@ -134,7 +134,7 @@
     ; my $count=0
     ; foreach my $class (@build)
         { $classes{$class} or next
-	; my @acc=@{$classes{$class}} or next
+    ; my @acc=@{$classes{$class}} or next
         ; while (@acc)
             { my ($accessor,$type)=splice(@acc,0,2)
             ; my $proto = ref($type) eq 'CODE' ? $type : $type{$type}
@@ -259,10 +259,35 @@ HO::accessor
 
 =head1 DESCRIPTION
 
-deprecated
+=over 4
+
+=item import
+
+=item accessors_for_class
+
+=item method
+
+=item ro
+
+=item rw
+
+=back
 
 =head1 SEE ALSO
 
 L<Class::ArrayObjects> by Robin Berjon (RBERJON)
 
 L<Class::BuildMethods> by Ovid -- add inside out data stores to a class.
+
+=head1 AUTHOR
+
+Sebastian Knapp, E<lt>rock@ccls-online.deE<gt>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2007-2011 by Sebastian Knapp
+
+You may distribute this code under the same terms as Perl itself.
+
+=cut
+

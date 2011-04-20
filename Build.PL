@@ -8,7 +8,8 @@ my $builder = Module::Build->new(
     dist_author         => 'Sebastian Knapp <sk@computer-leipzig.com>',
     dist_version        => '0.05',
     requires => {
-        'perl'          => '5.6.0',
+        'perl' => '5.6.0',
+        'Class::ISA' => '0.20',
         'Package::Subroutine' => '0.06'
     },
     build_requires => {
@@ -16,8 +17,8 @@ my $builder = Module::Build->new(
     },
     add_to_cleanup      => [ 'HO-class-*' ],
     create_makefile_pl  => 'traditional',
-    meta_add => { 
-        resources => { 
+    meta_add => {
+        resources => {
             repository => 'git://github.com/giftnuss/p5-ho-class.git',
             homepage => 'http://github.com/giftnuss/p5-ho-class/tree/master'
         }
