@@ -13,6 +13,10 @@ meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
 name: HO-class
+provides:
+  HO::class:
+    file: lib/HO/class.pm
+    version: 0.05
 requires:
   Class::ISA: 0.20
   Package::Subroutine: 0.06
