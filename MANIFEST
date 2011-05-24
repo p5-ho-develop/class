@@ -13,4 +13,3 @@ t/95_pod.t
 t/96_pod-coverage.t
 t/97_boilerplate.t
 t/98_minimum_version.t
-t/99_distribution.t

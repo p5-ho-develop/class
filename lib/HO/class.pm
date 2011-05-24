@@ -1,7 +1,7 @@
   package HO::class
 # *****************
-; our $VERSION='0.05'
-# *******************
+; our $VERSION='0.05';
+# ********************
 ; use strict; use warnings
 
 ; require HO::accessor
@@ -39,7 +39,7 @@
           , '_rw' => sub
             { ($name,$type) = splice(@args,0,2)
             ; push @acc, "_$name", $type
-            ; if(lc($args[0]) eq 'abstract')
+            ; if(definded($args[0]) && lc($args[0]) eq 'abstract')
                 { shift @args
                 }
               else
@@ -52,7 +52,7 @@
           , '_ro' => sub
             { ($name,$type) = splice(@args,0,2)
             ; push @acc, "_$name", $type
-            ; if(lc($args[0]) eq 'abstract')
+            ; if(defined($args[0]) && lc($args[0]) eq 'abstract')
                 { shift @args
                 }
               else
