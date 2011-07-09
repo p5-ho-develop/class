@@ -1,6 +1,6 @@
   package HO::accessor
 # ++++++++++++++++++++
-; our $VERSION='0.03'
+; our $VERSION='0.04'
 # +++++++++++++++++++
 ; use strict; use warnings
 
@@ -17,6 +17,14 @@
     ( 'hash' => sub
         { my ($self,%args) = @_
         ; while(my ($method,$value)=each(%args))
+            { my $access = "_$method"
+            ; $self->[$self->$access] = $value
+            }
+        ; return $self
+        },
+      'hashref' => sub
+        { my ($self,$args) = @_
+        ; while(my ($method,$value)=each(%$args))
             { my $access = "_$method"
             ; $self->[$self->$access] = $value
             }
@@ -59,28 +67,43 @@
                            # einfache Anwendung in bool Kontext
                          ; return @{$obj->[$i]}
                          }
-                     ; if(ref $idx eq 'ARRAY')
-                         { $obj->[$i] = $idx                 # set complete array
-                         ; return $obj
-                         }
-                       else
-                         { if(@_==3)
-                             { if($idx eq '<')
-                                 { push @{$obj->[$i]}, $val
-                                 }
-                               elsif($idx eq '>')
-                                 { unshift @{$obj->[$i]}, $val
-                                 }
-                               else
-                                 { $obj->[$i]->[$idx] = $val     # set one index
-                                 }
-                             ; return $obj
-                             }
+                       elsif(@_ == 2)
+		         { unless(ref $idx eq 'ARRAY')
+			    {  return $obj->[$i]->[$idx]     # get one index
+                            }
                            else
-                             { return $obj->[$i]->[$idx]     # get one index
-                             }
+                            { $obj->[$i] = $idx                 # set complete array
+                            ; return $obj
+                            }
                          }
-                 }}
+                       elsif(@_==3)
+                         { if(ref($idx))
+			     { if($val eq '<')
+                                 { $$idx = shift @{$obj->[$i]} }
+                               elsif($val eq '>')
+                                 { $$idx = pop @{$obj->[$i]} }
+                               else
+                                 { if(@$val == 0)
+			            { @$idx = splice(@{$obj->[$i]}) }
+                                   elsif(@$val == 1)
+                                    { @$idx = splice(@{$obj->[$i]},$val->[0]); }
+                                   elsif(@$val == 2)
+                                    { @$idx = splice(@{$obj->[$i]},$val->[0],$val->[1]); }
+                                 }
+                             }
+                            elsif($idx eq '<')
+                             { push @{$obj->[$i]}, $val
+                             }
+                            elsif($idx eq '>')
+                             { unshift @{$obj->[$i]}, $val
+                             }
+                            else
+                             { $obj->[$i]->[$idx] = $val     # set one index
+                             }
+                          ; return $obj
+                          }
+                     }
+                 }
     , '%' => sub { my ($n,$i) = @_
                  ; return sub { my ($obj,$key) = @_
                  ; if(@_==1)

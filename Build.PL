@@ -14,6 +14,7 @@ my $builder = Module::Build->new(
     },
     build_requires => {
         'Test::More' => 0,
+	'Test::Exception' => 0
     },
     add_to_cleanup      => [ 'HO-class-*' ],
     create_makefile_pl  => 'traditional',

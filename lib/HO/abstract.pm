@@ -79,7 +79,7 @@ HO::abstract - helper for abstract classes and methods
 
    package Class::Is::Abstract;
 
-   use HO::abstract class =>
+   use HO::abstract 'class';
 
 =head1 DESCRIPTION
 
@@ -90,6 +90,22 @@ HO::abstract - helper for abstract classes and methods
 =item abstract_method
 
 =back
+
+Note the abstract class places an C<init> method not a C<new> method
+in the package namespace. Thatswhy the order of use statements is important.
+
+   package Wrong;
+   use HO::class;
+   use HO::abstract;
+
+Here no init method is known when HO::class is called. Importing one from
+HO::abstract does not matter.
+
+   use Right;
+   use HO::abstract;
+   use HO::class; 
+
+Now C<Right-\>new> will die correctly.
 
 =head1 AUTHOR
 

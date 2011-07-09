@@ -1,5 +1,9 @@
 Revision history for HO-class
 
-0.01    Date/time
-        First version, released on an unsuspecting world.
+0.06    2011-07-09
+        - more tests
+        - rw array accessors can now shift, pop and some splicing
+
+0.05
+        - first public version
 
