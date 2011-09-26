@@ -24,7 +24,7 @@
     ; return sub
         { my $instanceof = ref($_[0])
         ; if($instanceof eq $class)
-            { Carp::croak("Abstract class '$class' should not be instatiated.")
+            { Carp::croak("Abstract class '$class' should not be instantiated.")
             }
           else
             { Carp::croak("Class '$instanceof' should overwrite method init from abstract class '$class'.")
