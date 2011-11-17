@@ -154,19 +154,35 @@ HO::class - class builder for hierarchical objects
 
 =head1 DESCRIPTION
 
-This is a class builder. It does its job during compile time.
+This is a class builder. Normally it does its job during compile time.
 
-Development started because there is no class builder for array based
+Development started because there was no class builder for array based
 objects with all the features I needed.
 
-Five different keys could be used, to define different
-accessors. The second field is name of the part from class
+Five different keys could be used, to define different accessors. 
+
+=over 4
+
+=item C<_rw>
+
+=item C<_ro>
+
+=item C<_lvalue>
+
+=item C<_method>
+
+=item C<_index>
+
+=back
+
+
+The second field is name of the part from class
 which will be created.
 
 
+=head2 Simple Accessors
 
 
-=head2 A Simple Slot To Define
 
 =head2 Methods Changeable For A Object
 
