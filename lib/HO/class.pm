@@ -156,9 +156,6 @@ HO::class - class builder for hierarchical objects
 
 This is a class builder. Normally it does its job during compile time.
 
-Development started because there was no class builder for array based
-objects with all the features I needed.
-
 Five different keys could be used, to define different accessors. 
 
 =over 4
@@ -175,14 +172,25 @@ Five different keys could be used, to define different accessors.
 
 =back
 
-
 The second field is name of the part from class
-which will be created.
-
+which will be created. Third field is used for datatype or
+code references.
 
 =head2 Simple Accessors
 
+For this the keys _ro and _rw exists. How the accessor is
+defined depends on the third argument. The datatypes are
+defined in L<HO::accessor> class in the global C<%type> hash.
 
+=over 4
+
+=item @ - data behind the accessor is array reference
+
+=item % - a hash reference
+
+=item $ - means a scalar and defaults to undef
+ 
+=back
 
 =head2 Methods Changeable For A Object
 
@@ -210,6 +218,11 @@ existence of a colon in the name is checked.
 =item make_subclass
 
 =back
+
+=head2 Motivation
+
+Development started because there was no class builder for array based
+objects with all the features I needed.
 
 =head1 ACKNOWLEDGEMENT
 

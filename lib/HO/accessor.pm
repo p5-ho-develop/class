@@ -6,7 +6,6 @@
 
 ; use Class::ISA
 ; require Carp
-; use Data::Dumper
 
 ; my %classes
 ; my %accessors
