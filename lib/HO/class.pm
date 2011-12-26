@@ -146,15 +146,35 @@ HO::class - class builder for hierarchical objects
 =head1 SYNOPSIS
 
    package Foo::Bar;
+
+   use subs 'init';
    use HO::class
       _lvalue => hey => '@',
       _method => huh => sub { print 'go' }
-      _rw     => spd => '%'
-      _ro     => cdu => '$'
+      _rw     => bla => '%'
+      _ro     => foo => '$'
+
+    sub init {
+       my ($self,@args) = @_;
+       ...
+       return $self;
+    }
 
 =head1 DESCRIPTION
 
-This is a class builder. Normally it does its job during compile time.
+This is a simple class builder for array based objects. Normally it does
+its job during compile time. A constructor new is build, which can't be 
+overwritten. Ok, it is pel and you natrurally you still write a new constructor.
+But it is not wise todo so. The generated new will initialize each member
+with apropriate default value.
+
+The method C<init> is reserved for setting up objects during construction.
+This method gets the fresh build object, and the arguments given to call to C<new>.
+A little questionable optimization is that the call to C<init> is not build 
+into the constructor when no such method exists or the option C<init> is not
+part of C<HO::class-\>import> call.
+
+For that reason the pragma C<subs> is often used, before C<HO::class>.   
 
 Five different keys could be used, to define different accessors. 
 
