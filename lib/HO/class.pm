@@ -214,6 +214,19 @@ defined in L<HO::accessor> class in the global C<%type> hash.
  
 =back
 
+=head2 Building a class at runtime
+
+It is possible to build class at runtime. The easiest way to do this,
+is calling C<HO::class-\>import>. At runtime the caller is commonly
+not the wanted class name. For that reason the global variable
+C<$HO::accessor::class> is used.
+
+   {
+      local $HO::accessor::class = 'My::Class';
+      HO::class->import(_ro => acc => '$', init => 'hash');
+   }
+   my $obj = My::Class->new(acc => 'data');
+
 =head2 Methods Changeable For A Object
 
  TODO ...
@@ -266,7 +279,4 @@ Copyright (C) 2007-2011 by Sebastian Knapp
 
 You may distribute this code under the same terms as Perl itself.
 
-=head1 CHANGELOG
-
-=cut
 
