@@ -1,9 +1,15 @@
 Revision history for HO-class
 
-0.06    2011-07-09
-        - more tests
-        - rw array accessors can now shift, pop and some splicing
+0.06 - 2011-07-09
+* more tests
+* rw array accessors can now shift, pop and some splicing
 
 0.05
-        - first public version
+* first public version
+
+0.4 2009-07-22
+* always store the base method in the object
+
+
+
 

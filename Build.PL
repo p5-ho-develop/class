@@ -5,8 +5,8 @@ use Module::Build;
 my $builder = Module::Build->new(
     module_name         => 'HO::class',
     license             => 'perl',
-    dist_author         => 'Sebastian Knapp <sk@computer-leipzig.com>',
-    dist_version        => '0.05',
+    dist_author         => 'Sebastian Knapp <rock@ccls-online.de>',
+    dist_version        => '0.06',
     requires => {
         'perl' => '5.6.0',
         'Class::ISA' => '0.20',

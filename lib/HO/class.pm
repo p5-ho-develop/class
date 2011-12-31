@@ -1,6 +1,6 @@
   package HO::class;
 # ******************
-  our $VERSION='0.05';
+  our $VERSION='0.06';
 # ********************
 ; use strict; use warnings
 
@@ -163,13 +163,11 @@ HO::class - class builder for hierarchical objects
 =head1 DESCRIPTION
 
 This is a simple class builder for array based objects. Normally it does
-its job during compile time. A constructor new is build, which can't be 
-overwritten. Ok, it is pel and you natrurally you still write a new constructor.
-But it is not wise todo so. The generated new will initialize each member
-with apropriate default value.
+its job during compile time. A constructor new is build. The generated 
+new will initialize each member with appropriate default value.
 
 The method C<init> is reserved for setting up objects during construction.
-This method gets the fresh build object, and the arguments given to call to C<new>.
+This method gets the fresh build object, and the arguments given calling C<new>.
 A little questionable optimization is that the call to C<init> is not build 
 into the constructor when no such method exists or the option C<init> is not
 part of C<HO::class-\>import> call.
@@ -182,7 +180,11 @@ Five different keys could be used, to define different accessors.
 
 =item C<_rw>
 
+The generated accessor can read and write the data.
+
 =item C<_ro>
+
+The accessor is for read access only.
 
 =item C<_lvalue>
 
@@ -265,9 +267,6 @@ Copyright (C) 2007-2011 by Sebastian Knapp
 You may distribute this code under the same terms as Perl itself.
 
 =head1 CHANGELOG
-
-   - 0.4 2009-07-22
-      * always store the base method in the object
 
 =cut
 
