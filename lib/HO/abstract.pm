@@ -1,8 +1,7 @@
   package HO::abstract
 # *********************
-; our $VERSION='0.01'
-# ********************
-; use strict; use warnings
+; use strict; use warnings;
+our $VERSION='0.01';
 
 ; use Package::Subroutine ()
 ; use Carp ()

@@ -1,8 +1,7 @@
   package HO::accessor
 # ++++++++++++++++++++
-; our $VERSION='0.04'
-# +++++++++++++++++++
-; use strict; use warnings
+; use strict; use warnings;
+our $VERSION='0.04';
 
 ; use Class::ISA
 ; require Carp
