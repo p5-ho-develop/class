@@ -164,7 +164,7 @@ HO::class - class builder for hierarchical objects
 
 This is a simple class builder for array based objects. Normally it does
 its job during compile time. A constructor new is build. The generated 
-new will initialize each member with appropriate default value.
+new will initialize each member with an appropriate default value.
 
 The method C<init> is reserved for setting up objects during construction.
 This method gets the fresh build object, and the arguments given calling C<new>.

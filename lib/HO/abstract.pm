@@ -36,8 +36,9 @@
 
   ; sub abstract_method
       { my @methods = @_
-      ; local $target = $target
-
+      ; unless(defined($target))
+	  { Carp::croak("No target class defined!")
+	  }
       ; foreach my $method (@methods)
           { install Package::Subroutine
               $target => $method => $METHOD_DIE->($method)
@@ -63,7 +64,7 @@
               }->{$action}
       ; die "Unknown action '$action' in use of HO::abstract." unless $perform
 
-      ; $perform->($target,@params)
+      ; $perform->(@params)
       }
   }
 

@@ -1,8 +1,9 @@
 Revision history for HO-class
 
-0.06 - 2011-07-09
+0.06 - 2012-05-07
 * more tests
 * rw array accessors can now shift, pop and some splicing
+* fixed a bug in HO::abstract
 
 0.05
 * first public version
