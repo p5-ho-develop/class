@@ -155,7 +155,7 @@ our $VERSION='0.04';
     ; my $count=0
     ; foreach my $class (@build)
         { $classes{$class} or next
-    ; my @acc=@{$classes{$class}} or next
+        ; my @acc=@{$classes{$class}} or next
         ; while (@acc)
             { my ($accessor,$type)=splice(@acc,0,2)
             ; my $proto = ref($type) eq 'CODE' ? $type : $type{$type}
@@ -242,7 +242,7 @@ our $VERSION='0.04';
     }
 
 ; sub rw
-    { my ($name,$idx,$type,$class) = @_
+    { my ($name,$idx,$type,$class) = @_; #warn "$name,$idx,$type,$class"
     ; return $rw_accessor{$type}->($name,$idx,$class)
     }
 
@@ -302,11 +302,11 @@ L<Class::BuildMethods> by Ovid -- add inside out data stores to a class.
 
 =head1 AUTHOR
 
-Sebastian Knapp, E<lt>rock@ccls-online.deE<gt>
+Sebastian Knapp, E<lt>news@young-workers.deE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2007-2011 by Sebastian Knapp
+Copyright (C) 2007-2017 by Sebastian Knapp
 
 You may distribute this code under the same terms as Perl itself.
 

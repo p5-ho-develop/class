@@ -10,7 +10,7 @@ my $builder = Module::Build->new(
     requires => {
         'perl' => '5.6.0',
         'Class::ISA' => '0.20',
-        'Package::Subroutine' => '0.06'
+        'Package::Subroutine' => '>= 0.06.000'
     },
     build_requires => {
         'Test::More' => 0,

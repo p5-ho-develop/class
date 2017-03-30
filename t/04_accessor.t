@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 11;
+use Test::More tests => 12;
 
 require_ok('HO::accessor');
 
@@ -36,7 +36,8 @@ Test::More::isa_ok($tw2,'T::one_without_constr');
     { Test::More::use_ok
         ( 'HO::class',
              _ro => name => '$',
-             _ro => href => '$'
+             _ro => href => '$',
+             _rw => version => sub () {'1.0'}
         )
     }
 
@@ -46,6 +47,7 @@ Test::More::isa_ok($tw2,'T::one_without_constr');
 
 ; Test::More::is($e->name,'timestamp')
 ; Test::More::is($e->href,'http://localhost:8091/time/')
+; Test::More::is($e->version,'1.0')
 
 # TODO skip when profiling
 ; package T::plus

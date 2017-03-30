@@ -43,7 +43,8 @@
                 { shift @args
                 }
               else
-                { push @r_, $name => sub
+                { $type = _type_of($type) if ref($type) eq 'CODE'
+				; push @r_, $name => sub
                     { my $idx = HO::accessor::_value_of($class,"_$name")
                     ; return HO::accessor::rw($name,$idx,$type,$class)
                     }
@@ -56,7 +57,8 @@
                 { shift @args
                 }
               else
-                { push @r_, $name => sub
+                { $type = _type_of($type) if ref($type) eq 'CODE'
+				; push @r_, $name => sub
                     { my $idx = HO::accessor::_value_of($class,"_$name")
                     ; return HO::accessor::ro($name,$idx,$type,$class)
                     }
@@ -134,6 +136,13 @@
   ; eval $code
   ; Carp::croak($@) if $@
   }
+  
+; sub _type_of ($)
+  { my $coderef = shift
+  ; my $val = $coderef->()
+  ; return ref($val) eq 'HASH' ? '%' :
+           ref($val) eq 'ARRAY' ? '@' : '$'
+  }
 
 ; 1
 
@@ -150,8 +159,8 @@ HO::class - class builder for hierarchical objects
    use subs 'init';
    use HO::class
       _lvalue => hey => '@',
-      _method => huh => sub { print 'go' }
-      _rw     => bla => '%'
+      _method => huh => sub { print 'go' },
+      _rw     => bla => '%',
       _ro     => foo => '$'
 
     sub init {
@@ -271,11 +280,11 @@ objects with all the features I needed.
 
 =head1 AUTHOR
 
-Sebastian Knapp, E<lt>rock@ccls-online.deE<gt>
+Sebastian Knapp, E<lt>news@young-workers.deE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2007-2011 by Sebastian Knapp
+Copyright (C) 2007-2017 by Sebastian Knapp
 
 You may distribute this code under the same terms as Perl itself.
 

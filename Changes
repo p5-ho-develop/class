@@ -1,5 +1,8 @@
 Revision history for HO-class
 
+0.07
+* support for default values in _ro and _rw accessors
+
 0.06 - 2012-05-07
 * more tests
 * rw array accessors can now shift, pop and some splicing
