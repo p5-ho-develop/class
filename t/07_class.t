@@ -1,6 +1,6 @@
 
 ; use strict
-; use Test::More tests => 4
+; use Test::More tests => 7
 
 ; use_ok('HO::class')
 
@@ -16,3 +16,21 @@
 ; $o2->[$o2->_hw] = sub { 'Hello world!' }
 ; is($o2->hw,'Hello world!')
 
+; package H::second
+; use HO::class 
+    _method => version => sub { '1.2' },
+    _method => void => undef
+
+; package H::third
+; use HO::class
+    _method => version => sub { '1.3' },
+    _method => void => sub { 'NULL' }
+ 
+; package main
+; my $m1 = H::second->new
+; is($m1->version,'1.2')
+; eval { $m1->void }
+; ok($@,"Exception: $@")
+
+; my $m2 = H::third->new
+; is($m2->version,'1.3')

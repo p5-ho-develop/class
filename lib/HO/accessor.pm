@@ -258,7 +258,7 @@ our $VERSION='0.04';
       else
         { return sub
              { my $self = shift
-             ; return $self->[$cdx]->($self,@_)
+             ; return $self->[$idx]->($self,@_)
              }
         }
     }

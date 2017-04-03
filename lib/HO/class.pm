@@ -1,6 +1,6 @@
   package HO::class;
 # ******************
-  our $VERSION='0.06';
+  our $VERSION='0.07';
 # ********************
 ; use strict; use warnings
 
@@ -86,7 +86,7 @@
       ; while(@methods)
           { my ($name,$code) = splice(@methods,0,2)
           ; my $idx = HO::accessor::_value_of($class,"_$name")
-          ; my $cdx = HO::accessor::_value_of($class,"__$name")
+          ; my $cdx = eval { HO::accessor::_value_of($class,"__$name") }
           ; *{join('::',$class,$name)} = HO::accessor::method($idx,$cdx)
           }
 
@@ -238,22 +238,21 @@ C<$HO::accessor::class> is used.
 
 =head2 Methods Changeable For A Object
 
- TODO ...
+You can change methods for an object if you overwrite the method
+using the index.
+
+   package H::first;
+   use HO::class _method => hw => sub { 'Hallo Welt!' };
+
+   my $o2 = H::first->new;
+   is($o2->hw,'Hallo Welt!'); # ok
+
+   $o2->[$o2->_hw] = sub { 'Hello world!' }
+   is($o2->hw,'Hello world!'); # ok
 
 How you can see, it is quite easy to do this in perl. Here during
 class construction you have to provide the default method, which
 is used when the object does not has an own method.
-
-The method name can be appended with an additional parameter C<static>
-separated by a colon. This means that the default method is stored
-in an additional slot in the object. So it is changeable on per class
-base. This is not the default, because the extra space required.
-
-   use HO::XML
-       _method => namespace:static => sub { undef }
-
-Currently the word behind the colon could be free choosen. Only the
-existence of a colon in the name is checked.
 
 =head1 Class Function
 
