@@ -2,7 +2,7 @@ h2. HO::class
 
 This is a simple class builder. It is used to create array based
 classes during compile time. It sets up the constructor new.
-Inheritence is supportet, but dynamic addition of new properties is not.
+Inheritance is supported, but dynamic addition of new properties is not.
 It is possible, but may not work well with inheritence. Until now there
 are no benchmarks.
 
