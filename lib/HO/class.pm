@@ -10,7 +10,11 @@
 ; sub import
     { my ($package,@args)=@_
     ; my $makeconstr = 1
-    ; my $class = $HO::accessor::class || caller
+    ; # uncoverable branch false
+      # uncoverable condition right
+      # uncoverable condition false
+      my $class = $HO::accessor::class ||
+          CORE::caller    # uncoverable statement
     ; my @acc         # all internal accessors
     ; my @methods     # method changeable on a per object base
     ; my @lvalue      # lvalue accessor
@@ -44,7 +48,7 @@
                 }
               else
                 { $type = _type_of($type) if ref($type) eq 'CODE'
-				; push @r_, $name => sub
+                ; push @r_, $name => sub
                     { my $idx = HO::accessor::_value_of($class,"_$name")
                     ; return HO::accessor::rw($name,$idx,$type,$class)
                     }
@@ -53,12 +57,13 @@
           , '_ro' => sub
             { ($name,$type) = splice(@args,0,2)
             ; push @acc, "_$name", $type
+            # abstract is similar to _index, but there is TIMTOWTDI
             ; if(defined($args[0]) && lc($args[0]) eq 'abstract')
                 { shift @args
                 }
               else
                 { $type = _type_of($type) if ref($type) eq 'CODE'
-				; push @r_, $name => sub
+                ; push @r_, $name => sub
                     { my $idx = HO::accessor::_value_of($class,"_$name")
                     ; return HO::accessor::ro($name,$idx,$type,$class)
                     }
@@ -136,7 +141,7 @@
   ; eval $code
   ; Carp::croak($@) if $@
   }
-  
+
 ; sub _type_of ($)
   { my $coderef = shift
   ; my $val = $coderef->()
@@ -172,18 +177,18 @@ HO::class - class builder for hierarchical objects
 =head1 DESCRIPTION
 
 This is a simple class builder for array based objects. Normally it does
-its job during compile time. A constructor new is build. The generated 
+its job during compile time. A constructor new is build. The generated
 new will initialize each member with an appropriate default value.
 
 The method C<init> is reserved for setting up objects during construction.
 This method gets the fresh build object, and the arguments given calling C<new>.
-A little questionable optimization is that the call to C<init> is not build 
+A little questionable optimization is that the call to C<init> is not build
 into the constructor when no such method exists or the option C<init> is not
 part of C<HO::class-\>import> call.
 
-For that reason the pragma C<subs> is often used, before C<HO::class>.   
+For that reason the pragma C<subs> is often used, before C<HO::class>.
 
-Five different keys could be used, to define different accessors. 
+Five different keys could be used, to define different accessors.
 
 =over 4
 
@@ -220,7 +225,7 @@ defined in L<HO::accessor> class in the global C<%type> hash.
 =item % - a hash reference
 
 =item $ - means a scalar and defaults to undef
- 
+
 =back
 
 =head2 Building a class at runtime
