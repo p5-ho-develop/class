@@ -66,23 +66,23 @@ our $VERSION='0.04';
                          ; return @{$obj->[$i]}
                          }
                        elsif(@_ == 2)
-		         { unless(ref $idx eq 'ARRAY')
-			    {  return $obj->[$i]->[$idx]     # get one index
-                            }
+                         { unless(ref $idx eq 'ARRAY')
+                             {  return $obj->[$i]->[$idx]     # get one index
+                             }
                            else
-                            { $obj->[$i] = $idx                 # set complete array
-                            ; return $obj
-                            }
+                             { $obj->[$i] = $idx                 # set complete array
+                             ; return $obj
+                             }
                          }
                        elsif(@_==3)
                          { if(ref($idx))
-			     { if($val eq '<')
+                 { if($val eq '<')
                                  { $$idx = shift @{$obj->[$i]} }
                                elsif($val eq '>')
                                  { $$idx = pop @{$obj->[$i]} }
                                else
                                  { if(@$val == 0)
-			            { @$idx = splice(@{$obj->[$i]}) }
+                        { @$idx = splice(@{$obj->[$i]}) }
                                    elsif(@$val == 1)
                                     { @$idx = splice(@{$obj->[$i]},$val->[0]); }
                                    elsif(@$val == 2)
