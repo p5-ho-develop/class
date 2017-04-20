@@ -1,6 +1,6 @@
   package HO::class;
 # ******************
-  our $VERSION='0.06';
+  our $VERSION='0.07';
 # ********************
 ; use strict; use warnings
 
@@ -112,35 +112,6 @@
           }
       }
     }
-
-; sub make_subclass
-  { my %args = @_
-  ; $args{'of'}   ||= [ "".caller(1) ]
-  ; $args{'name'} || Carp::croak('no name')
-  ; unless( defined $args{'in'} )
-      { $args{'in'} = $args{'of'}->[0]
-      }
-  ; unless($args{'code'})
-      { if(ref $args{'codegen'})
-          {
-            $args{'code'} = $args{'codegen'}->(%args)
-          }
-        else
-          { $args{'code'} = "$args{'codegen'}"
-          }
-      }
-  # optional shortcut_in
-  ; my $code = 'package '.$args{'in'}.'::'.$args{'name'}.';'
-             . 'our @ISA = qw/'.join(' ',@{$args{'of'}}).'/;' . $args{'code'}
-
-  ; if($args{'shortcut_in'})
-      { my $sc = $args{'shortcut'} || $args{'name'}
-      ; $code .= 'package '.$args{'shortcut_in'}.';'
-           . 'sub '.$sc.' { new '.$args{'in'}.'::'.$args{'name'}.'::(@_) }'
-      }
-  ; eval $code
-  ; Carp::croak($@) if $@
-  }
 
 ; sub _type_of ($)
   { my $coderef = shift
@@ -259,14 +230,6 @@ base. This is not the default, because the extra space required.
 
 Currently the word behind the colon could be free choosen. Only the
 existence of a colon in the name is checked.
-
-=head1 Class Function
-
-=over 4
-
-=item make_subclass
-
-=back
 
 =head2 Motivation
 
