@@ -6,15 +6,18 @@ my $builder = Module::Build->new(
     module_name         => 'HO::class',
     license             => 'perl',
     dist_author         => 'Sebastian Knapp <rock@ccls-online.de>',
-    dist_version        => '0.06',
+    dist_version        => '0.071',
     requires => {
         'perl' => '5.6.0',
         'Class::ISA' => '0.20',
-        'Package::Subroutine' => '>= 0.06.000'
+        'Package::Subroutine' => 'v0.22'
+    },
+    configure_requires => { 
+        'Module::Build' => 0.42 
     },
     build_requires => {
         'Test::More' => 0,
-	'Test::Exception' => 0
+        'Test::Exception' => 0
     },
     add_to_cleanup      => [ 'HO-class-*' ],
     create_makefile_pl  => 'traditional',

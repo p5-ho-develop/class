@@ -1,5 +1,8 @@
 Revision history for HO-class
 
+0.071 - 2018-07-20
+* first release on PAUSE
+
 0.07 - 2017-04-20
 * support for default values in _ro and _rw accessors
 * make_subclass class method removed from HO::class

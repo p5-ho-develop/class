@@ -8,7 +8,7 @@ BEGIN {
 }
 
 my @MODULES = (
-	'Perl::MinimumVersion 1.20',
+    'Perl::MinimumVersion 1.36',
 	'Test::MinimumVersion 0.008',
 );
 
@@ -18,9 +18,10 @@ plan( skip_all => 'Author tests not required for installation' )
 	unless ( $ENV{RELEASE_TESTING} or $ENV{AUTOMATED_TESTING} );
 
 # Load the testing modules
-foreach my $MODULE ( @MODULES ) {
+while( my $MODULE = shift @MODULES ) {
 	eval "use $MODULE";
 	if ( $@ ) {
+		next if @MODULES;
 		$ENV{RELEASE_TESTING}
 		? die( "Failed to load required release-testing module $MODULE" )
 		: plan( skip_all => "$MODULE not available for testing" );

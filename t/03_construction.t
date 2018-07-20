@@ -1,5 +1,5 @@
 
-use strict; use warnings; use utf8;
+use strict; use warnings;
 
 package main;
 

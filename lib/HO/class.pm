@@ -1,6 +1,6 @@
   package HO::class;
 # ******************
-  our $VERSION='0.07';
+  our $VERSION='0.071';
 # ********************
 ; use strict; use warnings
 

@@ -17,4 +17,5 @@ MYMETA.json
 views/*.cache
 *.log
 *~
-
+META.json
+MYMETA.json.lock

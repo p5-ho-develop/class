@@ -19,6 +19,8 @@ t/07_class.t
 t/09_index.t
 t/10_type.t
 t/11_runtime.t
+t/12_default.t
+t/13_noconstructor.t
 xt/critic.t
 xt/hasversion.t
 xt/manifest.t
@@ -26,3 +28,4 @@ xt/meta.t
 xt/minimumversion.t
 xt/pod.t
 xt/podcoverage.t
+META.json
