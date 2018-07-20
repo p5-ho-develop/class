@@ -1,11 +1,13 @@
 
 ; use strict
-; use Test::More tests => 4
+; use Test::More tests => 6
 
 ; use_ok('HO::class')
 
 ; package H::first
-; use HO::class _method => hw => sub { 'Hallo Welt!' }
+; use HO::class 
+    _method => hw => sub { 'Hallo Welt!' },
+    alias => hello => 'hw';
 
 ; package main
 ; my $o1 = H::first->new
@@ -16,3 +18,5 @@
 ; $o2->[$o2->_hw] = sub { 'Hello world!' }
 ; is($o2->hw,'Hello world!')
 
+; is($o1->hello,'Hallo Welt!')
+; is($o2->hello,'Hello world!')

@@ -137,7 +137,8 @@ HO::class - class builder for hierarchical objects
       _lvalue => hey => '@',
       _method => huh => sub { print 'go' },
       _rw     => bla => '%',
-      _ro     => foo => '$'
+      _ro     => foo => '$',
+      alias   => foobar => 'foo';
 
     sub init {
        my ($self,@args) = @_;
@@ -214,7 +215,17 @@ C<$HO::accessor::class> is used.
 
 =head2 Methods Changeable For A Object
 
- TODO ...
+You can change methods for an object if you overwrite the method
+using the index.
+
+   package H::first;
+   use HO::class _method => hw => sub { 'Hallo Welt!' };
+
+   my $o2 = H::first->new;
+   is($o2->hw,'Hallo Welt!'); # ok
+
+   $o2->[$o2->_hw] = sub { 'Hello world!' }
+   is($o2->hw,'Hello world!'); # ok
 
 How you can see, it is quite easy to do this in perl. Here during
 class construction you have to provide the default method, which

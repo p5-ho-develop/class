@@ -16,7 +16,6 @@ t/04_accessor.t
 t/05_abstract.t
 t/06_errors.t
 t/07_class.t
-t/08_subclass.t
 t/09_index.t
 t/10_type.t
 t/11_runtime.t
