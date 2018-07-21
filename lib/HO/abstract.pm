@@ -1,7 +1,7 @@
   package HO::abstract
 # *********************
 ; use strict; use warnings;
-our $VERSION='0.01';
+our $VERSION='0.02';
 
 ; use Package::Subroutine ()
 ; use Carp ()
@@ -9,12 +9,11 @@ our $VERSION='0.01';
 ; our $METHOD_DIE = sub
     { my ($method) = @_
     ; return sub
-        { if(ref($_[0]))
-            { Carp::croak("Abstract method '$method' called for object of class " . ref($_[0]).'.')
-            }
-          else
-            { Carp::croak("Abstract method '$method' called for class $_[0].")
-            }
+        { my $pkg = $_[0];
+		; if(ref($_[0]))
+            { $pkg = ref($_[0])
+		    }
+		; Carp::croak("Class '$pkg' does not override ${method}()")
         }
     }
 
@@ -39,7 +38,7 @@ our $VERSION='0.01';
 	  { Carp::croak("No target class defined!")
 	  }
       ; foreach my $method (@methods)
-          { install Package::Subroutine
+          { install Package::Subroutine::
               $target => $method => $METHOD_DIE->($method)
           }
       }
@@ -47,7 +46,7 @@ our $VERSION='0.01';
   ; sub abstract_class
       { my (@classes) = @_ ? @_ : ($target)
       ; foreach my $class (@classes)
-          { install Package::Subroutine
+          { install Package::Subroutine::
                      $class => 'init' => $CLASS_DIE->($class)
           }
       }

@@ -3,8 +3,9 @@
 use strict;
 use warnings;
 
-use Test::More tests => 12;
+use Test::More tests => 16;
 use Test::Exception;
+use Test::AbstractMethod;
 
 package HOA::five;
 use HO::abstract 'class';
@@ -31,6 +32,8 @@ throws_ok { HOA::four->new }
 	  qr/Abstract class 'HOA::four' should not be instantiated./;
 
 package HOB::six; use subs qw/init/; use HO::class;
+use HO::abstract method => 'ups';
+
 package HOB::seven; use subs qw/init/; use HO::class;
 package HOB::eight; use subs qw/init/; use HO::class;
 
@@ -43,6 +46,9 @@ foreach my $class (qw/HOB::six HOB::seven HOB::eight/)
     throws_ok { $class->new } 
 	  qr/Abstract class '$class' should not be instantiated./;
 }
+
+call_abstract_method_ok("HOB::six", "ups", "abstract method");
+call_abstract_class_method_ok("HOB::six", "ups", "abstract class method");
 
 #############################
 # Checks HO::class
@@ -77,6 +83,14 @@ ok($zero->_one =~ /^\d+$/, 'index is numeric');
 throws_ok { $one->two }
     qr/Can't locate object method "two" via package "HOB::on" at.*/;
 
+throws_ok { $one->__two }
+    qr/Can't locate object method "__two" via package "HOB::on" at.*/;
+
 is($one->three,42,'following definition');
 
 ok($one->can('one'),'for sure');
+
+my @methods = sort( findmethods Package::Subroutine:: 'HOB::on' );
+my @expect = qw(DOES VERSION __three _one _three _two can isa new one three);
+is_deeply(\@methods,\@expect,"expected methods");
+
