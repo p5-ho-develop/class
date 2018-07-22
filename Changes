@@ -1,5 +1,8 @@
 Revision history for HO-class
 
+0.073 - 2018-07-22
+* improve abstract method testing (DOES was missing in perl 5.8)
+
 0.072 - 2018-07-21
 * more release testing
 * made HO::abstract method compatible with Test::AbstractMethod

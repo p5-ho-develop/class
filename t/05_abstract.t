@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 16;
+use Test::More tests => 17;
 use Test::Exception;
 use Test::AbstractMethod;
 
@@ -90,7 +90,11 @@ is($one->three,42,'following definition');
 
 ok($one->can('one'),'for sure');
 
-my @methods = sort( findmethods Package::Subroutine:: 'HOB::on' );
-my @expect = qw(DOES VERSION __three _one _three _two can isa new one three);
-is_deeply(\@methods,\@expect,"expected methods");
+my @methods_zro = sort( findsubs Package::Subroutine:: 'HOB::zro' );
+my @expect_zro = qw(__three _one _three _two new three);
+is_deeply(\@methods_zro,\@expect_zro,"expected methods");
+
+my @methods_on = sort( findsubs Package::Subroutine:: 'HOB::on' );
+my @expect_on = qw(new one);
+is_deeply(\@methods_on,\@expect_on,"expected methods");
 
