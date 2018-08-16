@@ -51,7 +51,6 @@
                 ; my $coderef = $HO::accessor::rw_accessor{$type}
                 ; Carp::croak("Unknown property type '$type', in setup for class $class.")
                     unless defined $coderef
-                ; my $subref = $coderef->($name,$class)
                 ; push @r_, $name => [ $coderef, $name, $class ]
                 }
             }
@@ -67,7 +66,6 @@
                 ; my $coderef = $HO::accessor::ro_accessor{$type}
                 ; Carp::croak("Unknown property type '$type', in setup for class $class.")
                     unless defined $coderef
-                ; my $subref = $coderef->($name,$class)
                 ; push @r_, $name => [ $coderef, $name, $class ]
                 }
             }
@@ -98,15 +96,15 @@
           ; if(defined $cdx)
               { *{join('::',$class,$name)} = sub
                   { my $self = shift
-                  ; return $self->[$self->${nidx}]
-                       ? $self->[$self->${nidx}]->($self,@_)
-                       : $self->[$self->${ncdx}]->($self,@_)
+                  ; return $self->[$idx]
+                       ? $self->[$idx]->($self,@_)
+                       : $self->[$cdx]->($self,@_)
                   }
               }
             else
               { *{join('::',$class,$name)} = sub
                   { my $self = shift
-                  ; return $self->[$self->${nidx}]->($self,@_)
+                  ; return $self->[$idx]->($self,@_)
                   }
               }
           }
@@ -114,9 +112,10 @@
       ; while(@lvalue)
           { my $name = shift(@lvalue)
           ; my $acc = "_$name"
+          ; my $idx = HO::accessor::_value_of($class, $acc)
           ; *{join('::',$class,$name)} = sub : lvalue
                { my $self = shift();
-               ; $self->[$self->${acc}]
+               ; $self->[$idx]
                }
           }
       ; while(my ($name,$subdata) = splice(@r_,0,2))

@@ -32,48 +32,48 @@ our $VERSION='0.05';
 
 ; our %ro_accessor =
     ( '$' => sub { my ($n,$class) = @_
-                 ; my $idx = "_$n"
+                 ; my $idx = HO::accessor::_value_of($class, "_$n")
                  ; return sub ()
                      { Carp::confess("Not a class method '$n'.")
                          unless ref($_[0])
-                     ; $_[0]->[$_[0]->${idx}]
+                     ; $_[0]->[$idx]
                      }
                  }
     , '@' => sub { my ($n,$class) = @_
-                 ; my $iname = "_$n"
+                 ; my $ai = HO::accessor::_value_of($class, "_$n")
                  ; return sub
                      { my ($obj,$idx) = @_
                      ; if(@_==1)
-                        { return @{$obj->[$obj->${iname}]}
+                        { return @{$obj->[$ai]}
                         }
                        else
-                        { return $obj->[$obj->${iname}]->[$idx]
+                        { return $obj->[$ai]->[$idx]
                         }
                  }}
     , '%' => sub { my ($n,$class) = @_
-                 ; my $iname = "_$n"
+                 ; my $idx = HO::accessor::_value_of($class, "_$n")
                  ; return sub
                      { my ($obj,$key) = @_
-                     ; (@_==1) ? {%{$obj->[$obj->${iname}]}}
-                               : $obj->[$obj->${iname}]->{$key}
+                     ; (@_==1) ? {%{$obj->[$idx]}}
+                               : $obj->[$idx]->{$key}
                      }
                  }
     )
 
 ; our %rw_accessor =
     ( '$' => sub { my ($n,$class) = @_
-                 ; my $nidx = "_$n"
+                 ; my $idx = HO::accessor::_value_of($class, "_$n")
                  ; return sub
                      { my ($obj,$val) = @_
                      ; Carp::confess("Not a class method '$n'.")
                          unless ref($obj)
-                     ; return $obj->[$obj->${nidx}] if @_==1
-                     ; $obj->[$obj->${nidx}] = $val
+                     ; return $obj->[$idx] if @_==1
+                     ; $obj->[$idx] = $val
                      ; return $obj
                      }
                  }
     , '@' => sub { my ($n,$class) = @_
-                 ; my $nidx = "_$n"
+                 ; my $ai = HO::accessor::_value_of($class, "_$n")
                  ; return sub
                      { my ($obj,$idx,$val) = @_
                      ; Carp::confess("Not a class method '$n'.")
@@ -81,72 +81,71 @@ our $VERSION='0.05';
                      ; if(@_==1) # get values
                          { # etwas mehr Zugriffsschutz da keine Ref
                            # einfache Anwendung in bool Kontext
-                         ; return @{$obj->[$obj->${nidx}]}
+                         ; return @{$obj->[$ai]}
                          }
                        elsif(@_ == 2)
                          { unless(ref $idx eq 'ARRAY')
-                             {  return $obj->[$obj->${nidx}]->[$idx]     # get one index
+                             {  return $obj->[$ai]->[$idx]     # get one index
                              }
                            else
-                             { $obj->[$obj->${nidx}] = $idx                 # set complete array
+                             { $obj->[$ai] = $idx                 # set complete array
                              ; return $obj
                              }
                          }
                        elsif(@_==3)
                          { if(ref($idx))
                              { if($val eq '<')
-                                 { $$idx = shift @{$obj->[$obj->${nidx}]}
+                                 { $$idx = shift @{$obj->[$ai]}
                                  }
                                elsif($val eq '>')
-                                 { $$idx = pop @{$obj->[$obj->${nidx}]}
+                                 { $$idx = pop @{$obj->[$ai]}
                                  }
                                else
                                  { if(@$val == 0)
-                                     { @$idx = splice(@{$obj->[$obj->${nidx}]})
+                                     { @$idx = splice(@{$obj->[$ai]})
                                      }
                                    elsif(@$val == 1)
-                                     { @$idx = splice(@{$obj->[$obj->${nidx}]},$val->[0]);
+                                     { @$idx = splice(@{$obj->[$ai]},$val->[0]);
                                      }
                                    elsif(@$val == 2)
-                                     { @$idx = splice(@{$obj->[$obj->${nidx}]},$val->[0],$val->[1]);
+                                     { @$idx = splice(@{$obj->[$ai]},$val->[0],$val->[1]);
                                      }
                                  }
                              }
                             elsif($idx eq '<')
-                             { push @{$obj->[$obj->${nidx}]}, $val
+                             { push @{$obj->[$ai]}, $val
                              }
                             elsif($idx eq '>')
-                             { unshift @{$obj->[$obj->${nidx}]}, $val
+                             { unshift @{$obj->[$ai]}, $val
                              }
                             else
-                             { $obj->[$obj->${nidx}]->[$idx] = $val     # set one index
+                             { $obj->[$ai]->[$idx] = $val     # set one index
                              }
                           ; return $obj
                           }
                      }
                  }
-    , '%' => sub { my ($n,$i) = @_
-                 ; my $nidx = "_$n"
+    , '%' => sub { my ($n,$class) = @_
+                 ; my $idx = HO::accessor::_value_of($class, "_$n")
                  ; return sub { my ($obj,$key) = @_
                  ; if(@_==1)
-                     { return $obj->[$obj->${nidx}] # for a hash an reference is easier to handle
+                     { return $obj->[$idx] # for a hash an reference is easier to handle
                      }
                    elsif(@_==2)
                      { if(ref($key) eq 'HASH')
-                         { $obj->[$obj->${nidx}] = $key
+                         { $obj->[$idx] = $key
                          ; return $obj
                          }
                         else
-                         { return $obj->[$obj->${nidx}]->{$key}
+                         { return $obj->[$idx]->{$key}
                          }
                      }
                    else
                      { shift(@_)
                      ; my @kv = @_
-                     ; my $ni = $obj->${nidx}
                      ; while(@kv)
                          { my ($k,$v) = splice(@kv,0,2)
-                         ; $obj->[$ni]->{$k} = $v
+                         ; $obj->[$idx]->{$k} = $v
                          }
                      ; return $obj
                      }
