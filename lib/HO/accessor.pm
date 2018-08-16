@@ -32,27 +32,27 @@ our $VERSION='0.05';
 
 ; our %ro_accessor =
     ( '$' => sub { my ($n,$class) = @_
-		         ; my $idx = "_$n"
+                 ; my $idx = "_$n"
                  ; return sub ()
-                     { Carp::confess("Not a class method '$n'.") 
-						 unless ref($_[0])
-					 ; $_[0]->[$_[0]->${idx}] 
-					 }
+                     { Carp::confess("Not a class method '$n'.")
+                         unless ref($_[0])
+                     ; $_[0]->[$_[0]->${idx}]
+                     }
                  }
     , '@' => sub { my ($n,$class) = @_
-		         ; my $iname = "_$n"
-                 ; return sub 
+                 ; my $iname = "_$n"
+                 ; return sub
                      { my ($obj,$idx) = @_
                      ; if(@_==1)
                         { return @{$obj->[$obj->${iname}]}
-						}
+                        }
                        else
                         { return $obj->[$obj->${iname}]->[$idx]
-						}
+                        }
                  }}
     , '%' => sub { my ($n,$class) = @_
-		         ; my $iname = "_$n"
-                 ; return sub 
+                 ; my $iname = "_$n"
+                 ; return sub
                      { my ($obj,$key) = @_
                      ; (@_==1) ? {%{$obj->[$obj->${iname}]}}
                                : $obj->[$obj->${iname}]->{$key}
@@ -62,21 +62,21 @@ our $VERSION='0.05';
 
 ; our %rw_accessor =
     ( '$' => sub { my ($n,$class) = @_
-		         ; my $nidx = "_$n"
-                 ; return sub 
+                 ; my $nidx = "_$n"
+                 ; return sub
                      { my ($obj,$val) = @_
-					 ; Carp::confess("Not a class method '$n'.") 
-						 unless ref($obj)
+                     ; Carp::confess("Not a class method '$n'.")
+                         unless ref($obj)
                      ; return $obj->[$obj->${nidx}] if @_==1
                      ; $obj->[$obj->${nidx}] = $val
                      ; return $obj
                      }
                  }
     , '@' => sub { my ($n,$class) = @_
-		         ; my $nidx = "_$n"
+                 ; my $nidx = "_$n"
                  ; return sub
                      { my ($obj,$idx,$val) = @_
-                     ; Carp::confess("Not a class method '$n'.") 
+                     ; Carp::confess("Not a class method '$n'.")
                          unless ref $obj
                      ; if(@_==1) # get values
                          { # etwas mehr Zugriffsschutz da keine Ref
@@ -95,21 +95,21 @@ our $VERSION='0.05';
                        elsif(@_==3)
                          { if(ref($idx))
                              { if($val eq '<')
-                                 { $$idx = shift @{$obj->[$obj->${nidx}]} 
-								 }
+                                 { $$idx = shift @{$obj->[$obj->${nidx}]}
+                                 }
                                elsif($val eq '>')
-                                 { $$idx = pop @{$obj->[$obj->${nidx}]} 
-								 }
+                                 { $$idx = pop @{$obj->[$obj->${nidx}]}
+                                 }
                                else
                                  { if(@$val == 0)
-                                     { @$idx = splice(@{$obj->[$obj->${nidx}]}) 
-									 }
+                                     { @$idx = splice(@{$obj->[$obj->${nidx}]})
+                                     }
                                    elsif(@$val == 1)
-                                     { @$idx = splice(@{$obj->[$obj->${nidx}]},$val->[0]); 
-									 }
+                                     { @$idx = splice(@{$obj->[$obj->${nidx}]},$val->[0]);
+                                     }
                                    elsif(@$val == 2)
-                                     { @$idx = splice(@{$obj->[$obj->${nidx}]},$val->[0],$val->[1]); 
-									 }
+                                     { @$idx = splice(@{$obj->[$obj->${nidx}]},$val->[0],$val->[1]);
+                                     }
                                  }
                              }
                             elsif($idx eq '<')
@@ -126,7 +126,7 @@ our $VERSION='0.05';
                      }
                  }
     , '%' => sub { my ($n,$i) = @_
-		         ; my $nidx = "_$n"
+                 ; my $nidx = "_$n"
                  ; return sub { my ($obj,$key) = @_
                  ; if(@_==1)
                      { return $obj->[$obj->${nidx}] # for a hash an reference is easier to handle
@@ -243,7 +243,7 @@ our $VERSION='0.05';
 # Package Function
 ; sub _value_of
     { my ($class,$accessorname) = @_
-	; return $accessors{$class}{$accessorname}->()
+    ; return $accessors{$class}{$accessorname}->()
     }
 
 ; 1

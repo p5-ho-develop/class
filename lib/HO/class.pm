@@ -48,11 +48,11 @@
                 }
               else
                 { $type = _type_of($type) if ref($type) eq 'CODE'
-				; my $coderef = $HO::accessor::rw_accessor{$type}
-				; Carp::croak("Unknown property type '$type', in setup for class $class.")
+                ; my $coderef = $HO::accessor::rw_accessor{$type}
+                ; Carp::croak("Unknown property type '$type', in setup for class $class.")
                     unless defined $coderef
-				; my $subref = $coderef->($name,$class)
-                ; push @r_, $name => $subref
+                ; my $subref = $coderef->($name,$class)
+                ; push @r_, $name => [ $coderef, $name, $class ]
                 }
             }
           , '_ro' => sub
@@ -64,18 +64,17 @@
                 }
               else
                 { $type = _type_of($type) if ref($type) eq 'CODE'
-				; my $coderef = $HO::accessor::ro_accessor{$type}
+                ; my $coderef = $HO::accessor::ro_accessor{$type}
                 ; Carp::croak("Unknown property type '$type', in setup for class $class.")
                     unless defined $coderef
-			    ; my $subref = $coderef->($name,$class)
-                ; push @r_, $name => $subref
+                ; my $subref = $coderef->($name,$class)
+                ; push @r_, $name => [ $coderef, $name, $class ]
                 }
             }
           , 'init' => sub
               { $makeinit = shift @args
               }
           # no actions => options
-          # all are untested until now
           , 'noconstructor' => sub
             { $makeconstr = 0
             }
@@ -92,14 +91,14 @@
     ; { no strict 'refs'
       ; while(@methods)
           { my ($name,$code) = splice(@methods,0,2)
-		  ; my ($nidx,$ncdx) = ("_$name","__$name")
+          ; my ($nidx,$ncdx) = ("_$name","__$name")
           ; my $idx = HO::accessor::_value_of($class, $nidx)
           ; my $cdx = HO::accessor::_value_of($class, $ncdx)
 
           ; if(defined $cdx)
               { *{join('::',$class,$name)} = sub
                   { my $self = shift
-                  ; return $self->[$self->${nidx}] 
+                  ; return $self->[$self->${nidx}]
                        ? $self->[$self->${nidx}]->($self,@_)
                        : $self->[$self->${ncdx}]->($self,@_)
                   }
@@ -117,11 +116,12 @@
           ; my $acc = "_$name"
           ; *{join('::',$class,$name)} = sub : lvalue
                { my $self = shift();
-			   ; $self->[$self->${acc}]
+               ; $self->[$self->${acc}]
                }
           }
-      ; while(my ($name,$subref) = splice(@r_,0,2))
-          { *{join('::',$class,$name)} = $subref
+      ; while(my ($name,$subdata) = splice(@r_,0,2))
+          { my ($coderef,$name,$class) = @$subdata
+          ; *{join('::',$class,$name)} = $coderef->($name,$class)
           }
       ; while(my ($new,$subname) = splice(@alias,0,2))
           { my $idx = HO::accessor::_value_of($class,"_$subname")
