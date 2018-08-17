@@ -1,8 +1,8 @@
-  package HO::class;
-# ******************
-  our $VERSION='0.073';
+  package HO::class
+# *****************
+; use strict; use warnings;
+  our $VERSION='0.074';
 # ********************
-; use strict; use warnings
 
 ; require HO::accessor
 ; require Carp
