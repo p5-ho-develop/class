@@ -22,5 +22,5 @@ requires:
 resources:
   homepage: http://github.com/giftnuss/p5-ho-class/tree/master
   repository: git://github.com/giftnuss/p5-ho-class.git
-version: '0.076'
+version: '0.077'
 x_serialization_backend: 'CPAN::Meta::YAML version 0.018'
