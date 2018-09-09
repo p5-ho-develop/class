@@ -21,10 +21,14 @@
     ; $HO::accessor::classes{$class} = [] unless
         defined $HO::accessor::classes{$class}
     ; my $mix = $HO::accessor::classes{$mixin}
+    ; $mix = [] unless ref $mix
     ; push @{$HO::accessor::classes{$class}}, @$mix
-    ; my @methods = Package::Subroutine->findsubs( $mixin )
+    ; my %acc = @$mix
+    ; my @methods = grep { !(/^new$/ || defined($acc{$_})) }
+        Package::Subroutine->findsubs( $mixin )
     ; Package::Subroutine->export_to($class)->($mixin,@methods)
     }
 
 ; 1
 
+__END__
