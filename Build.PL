@@ -24,8 +24,8 @@ my $builder = Module::Build->new(
     create_makefile_pl  => 'traditional',
     meta_add => {
         resources => {
-            repository => 'git://github.com/giftnuss/p5-ho-class.git',
-            homepage => 'http://github.com/giftnuss/p5-ho-class/tree/master'
+            repository => 'git://github.com/p5-ho-develop/class.git',
+            homepage => 'https://github.com/p5-ho-develop/class/tree/master'
         }
     }
 );
