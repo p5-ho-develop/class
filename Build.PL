@@ -6,11 +6,11 @@ my $builder = Module::Build->new(
     module_name         => 'HO::class',
     license             => 'perl',
     dist_author         => 'Sebastian Knapp <sknpp@cpan.org>',
-    dist_version        => '0.077',
+    dist_version        => '0.078',
     requires => {
         'perl' => '5.6.0',
         'Class::ISA' => '0.20',
-        'Package::Subroutine' => 'v0.22'
+        'Package::Subroutine' => '0.022'
     },
     configure_requires => {
         'Module::Build' => 0.42
