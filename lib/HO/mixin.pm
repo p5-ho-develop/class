@@ -1,7 +1,7 @@
-  package HO::mixin;
+package HO::mixin;
 # ******************
-  our $VERSION = '0.01';
-# **********************
+our $VERSION = '0.02';
+# ********************
 ; use strict; use warnings
 
 ; use Carp ()
