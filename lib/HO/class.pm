@@ -282,7 +282,7 @@ base. This is not the default, because the extra space required.
 Currently the word behind the colon could be free choosen. Only the
 existence of a colon in the name is checked.
 
-=head Add your own types
+=head2 Add your own types
 
 Your are able to register your own types. The API is low level.
 Given a simple type like a stack.
