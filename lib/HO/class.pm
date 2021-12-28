@@ -1,7 +1,7 @@
 package HO::class;
 # ****************
 use strict; use warnings;
-our $VERSION='0.080';
+our $VERSION='0.081';
 # *******************
 
 ; require HO::accessor
@@ -56,7 +56,7 @@ our $VERSION='0.080';
                 { shift @args
                 }
               else
-                { $type = _type_of($type) if ref($type) eq 'CODE'
+                { $type = _type_of($type) if ref($type)
                 ; my $coderef = $HO::accessor::rw_accessor{$type}
                 ; Carp::croak("Unknown property type '$type', in setup for class $class.")
                     unless defined $coderef
@@ -71,7 +71,7 @@ our $VERSION='0.080';
                 { shift @args
                 }
               else
-                { $type = _type_of($type) if ref($type) eq 'CODE'
+                { $type = _type_of($type) if ref($type)
                 ; my $coderef = $HO::accessor::ro_accessor{$type}
                 ; Carp::croak("Unknown property type '$type', in setup for class $class.")
                     unless defined $coderef
@@ -147,10 +147,16 @@ our $VERSION='0.080';
     }
 
 ; sub _type_of ($)
-  { my $coderef = shift
-  ; my $val = $coderef->()
-  ; return ref($val) eq 'HASH' ? '%' :
-           ref($val) eq 'ARRAY' ? '@' : '$'
+  { my $type = shift
+  ; if( ref($type) eq 'CODE' )
+      { my $val = $type->()
+      ; return ref($val) eq 'HASH' ? '%' :
+               ref($val) eq 'ARRAY' ? '@' : '$'
+      }
+    elsif( ref($type) eq 'ARRAY' )
+      { return $type->[0]
+      }
+    Carp::croak("Unknown default value definition.")
   }
 
 ; 1

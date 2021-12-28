@@ -1,10 +1,10 @@
 #!perl -T
 
-use Test::More tests => 2;
+use Test2::V0;
 
-BEGIN {
-    use_ok( 'HO::class' );
-    use_ok( 'HO::abstract' );
-}
+plan(2);
+
+use HO::class ; BEGIN { ok(1,'HO::class') };
+use HO::abstract ; BEGIN { ok(1,'HO::abstract') };
 
 diag( "Testing HO::class $HO::class::VERSION, Perl $], $^X" );

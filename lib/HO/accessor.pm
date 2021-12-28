@@ -1,7 +1,7 @@
 package HO::accessor;
 # +++++++++++++++++++
 use strict; use warnings;
-our $VERSION='0.053';
+our $VERSION='0.054';
 # +++++++++++++++++++
 
 ; use Class::ISA ()
@@ -188,7 +188,9 @@ our $VERSION='0.053';
         ; my @acc=@{$classes{$class}} or next
         ; while (@acc)
             { my ($accessor,$type)=splice(@acc,0,2)
-            ; my $proto = ref($type) eq 'CODE' ? $type : $type{$type}
+            ; my $proto = ref($type) ?
+                            ( ref($type) eq 'ARRAY' ? $type->[1] : $type )
+                            : $type{$type}
             ; unless(ref $proto eq 'CODE')
                 { Carp::carp("Unknown property type '$type', in setup for class $caller.")
                 ; $proto=sub{undef}
