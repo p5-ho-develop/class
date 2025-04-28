@@ -1,4 +1,5 @@
-h2. HO::class
+HO::class
+=========
 
 This is a simple class builder. It is used to create array based
 classes during compile time. It sets up the constructor new.
