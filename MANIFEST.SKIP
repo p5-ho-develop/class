@@ -59,3 +59,11 @@
 # Avoid archives of this distribution
 \bHO-class-[\d\.\_]+
 ^$
+
+# Avoid local development files
+ENV.sh
+install.sh
+coverage.sh
+requirements.txt
+requirements-dev.txt
+requirements-release.txt
