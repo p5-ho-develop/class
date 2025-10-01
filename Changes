@@ -1,4 +1,16 @@
 Revision history for HO-class
+0.081 -
+* calling the default value method during initialization could be
+  problematic, an additional way to set the default value with an
+  array ref was implemented: 
+     
+     [ TYPE, sub { <DEFAULT VALUE> } ] # Type is '$','@','%',...
+  
+* use Test2 for testing purpose
+      
+0.080 - 2019-01-01
+* try to fix cpan installation
+
 0.079 - 2019-12-17
 * skip also init method in mixins
 * implement "without" and "only" options for mixin methods
